@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>청 - 프로필</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+        <img src="assets/profile.png" alt="프로필 사진" class="profile-img">
+        <h1>청</h1>
+        <p>반갑습니다! '청'입니다.</p>
+
+        <div class="button-group">
+            <button class="btn" onclick="toggleGallery()">
+                <span>🌊</span>
+            </button>
+            <button class="btn" onclick="alert('바보')">
+                <span>💙</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Gallery Modal -->
+    <div id="galleryModal" class="modal">
+        <div class="modal-header">
+            <h2>미디어 갤러리</h2>
+            <button class="close-btn" onclick="toggleGallery()">&times;</button>
+        </div>
+        <div class="modal-content gallery-grid">
+            <div class="grid-item"><img src="assets/gallery1.png" alt="Gallery 1" onclick="openLightbox(this.src)">
+            </div>
+            <div class="grid-item"><img src="assets/gallery2.png" alt="Gallery 2" onclick="openLightbox(this.src)">
+            </div>
+            <div class="grid-item"><img src="assets/gallery3.jpg" alt="Gallery 3" onclick="openLightbox(this.src)">
+            </div>
+            <div class="grid-item"><img src="assets/gallery4.jpg" alt="Gallery 4" onclick="openLightbox(this.src)">
+            </div>
+        </div>
+    </div>
+
+    <!-- Lightbox Modal -->
+    <div id="lightboxModal" class="lightbox" onclick="closeLightbox()">
+        <img id="lightboxImg" src="" alt="Enlarged Image">
+    </div>
+
+    <script>
+        function toggleGallery() {
+            const modal = document.getElementById('galleryModal');
+            if (modal.style.display === 'flex') {
+                modal.style.display = 'none';
+            } else {
+                modal.style.display = 'flex';
+            }
+        }
+
+        function openLightbox(src) {
+            const lb = document.getElementById('lightboxModal');
+            const lbImg = document.getElementById('lightboxImg');
+            lbImg.src = src;
+            lb.style.display = 'flex';
+        }
+
+        function closeLightbox() {
+            document.getElementById('lightboxModal').style.display = 'none';
+        }
+    </script>
+</body>
+
+</html>
