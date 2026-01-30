@@ -316,18 +316,33 @@ body {
     margin-top: 10px;
 }
 
+/* Cute Delete Button */
 .btn-delete {
-    background: none;
-    border: none;
-    color: #ff6b6b;
-    font-size: 0.8rem;
+    background: #fff0f0;
+    border: 1px solid #ffecec;
+    color: #ff9999;
+    font-size: 0.75rem;
     cursor: pointer;
-    padding: 4px;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-weight: bold;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.btn-delete::before {
+    content: '✖';
+    font-size: 0.8rem;
 }
 
 .btn-delete:hover {
-    color: #c0392b;
-    text-decoration: underline;
+    background: #ff6b6b;
+    color: white;
+    border-color: #ff6b6b;
+    transform: scale(1.1) rotate(5deg);
+    box-shadow: 0 3px 10px rgba(255, 107, 107, 0.3);
 }
 
 /* Modals (Gallery & Edit) */
