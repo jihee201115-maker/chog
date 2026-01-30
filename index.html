@@ -6,15 +6,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>청 - 프로필</title>
     <link rel="stylesheet" href="style.css">
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;500;700&display=swap" rel="stylesheet">
 </head>
 
 <body>
-    <div class="app-container">
-        <!-- Auth Container (Login/Signup) -->
-        <div id="authContainer" class="container">
+    <!-- Auth Page (Login/Signup) -->
+    <div id="authContainer" class="auth-wrapper">
+        <div class="auth-box">
             <h1 class="logo">chog</h1>
+            <p class="auth-desc">청의 공간에 오신 것을 환영합니다</p>
+
             <div class="auth-tabs">
                 <button class="active" onclick="showLogin()">로그인</button>
                 <button onclick="showSignup()">회원가입</button>
@@ -23,71 +24,103 @@
             <form id="loginForm" class="auth-form" onsubmit="handleLogin(event)">
                 <input type="email" id="loginEmail" placeholder="이메일" required>
                 <input type="password" id="loginPassword" placeholder="비밀번호" required>
-                <button type="submit" class="btn-primary">로그인</button>
+                <button type="submit" class="btn-submit">입장하기</button>
             </form>
 
             <form id="signupForm" class="auth-form hidden" onsubmit="handleSignup(event)">
                 <input type="text" id="signupName" placeholder="이름 (닉네임)" required>
                 <input type="email" id="signupEmail" placeholder="이메일" required>
                 <input type="password" id="signupPassword" placeholder="비밀번호 (6자 이상)" required minlength="6">
-                <button type="submit" class="btn-primary">회원가입</button>
+                <button type="submit" class="btn-submit">가입하기</button>
             </form>
             <p id="authError" class="error-msg"></p>
         </div>
+    </div>
 
-        <!-- Main App Container (Hidden by default) -->
-        <div id="mainContainer" class="main-layout hidden">
-            <!-- Profile Section -->
-            <aside class="profile-card">
-                <div class="profile-header">
-                    <img src="assets/profile.png" alt="Profile" id="userProfileImg" class="profile-img-small">
-                    <div>
-                        <h2 id="userNameDisplay">청</h2>
-                        <span id="userEmailDisplay" class="user-email">@loading...</span>
+    <!-- Main Page (Profile + SNS) -->
+    <div id="mainContainer" class="main-wrapper hidden">
+        <!-- 1. Original Profile Section -->
+        <section class="profile-section">
+            <div class="profile-card-glass">
+                <div class="profile-top">
+                    <img src="assets/profile.png" alt="프로필" id="mainProfileImg" class="profile-img">
+                    <div class="profile-info">
+                        <h1 id="mainUserName">청</h1>
+                        <p id="mainUserBio">반갑습니다! '청'입니다.</p>
                     </div>
                 </div>
-                <button class="btn-edit" onclick="toggleEditProfile()">프로필 수정</button>
-                <button class="btn-logout" onclick="handleLogout()">로그아웃</button>
-            </aside>
 
-            <!-- Profile Edit Modal -->
-            <div id="editProfileModal" class="modal-overlay hidden">
-                <div class="modal-box">
-                    <h3>프로필 수정</h3>
-                    <input type="text" id="editNameInput" placeholder="새로운 이름">
-                    <input type="text" id="editImgInput" placeholder="프로필 이미지 URL (선택사항)">
-                    <div class="modal-actions">
-                        <button onclick="saveProfile()" class="btn-primary">저장</button>
-                        <button onclick="toggleEditProfile()" class="btn-secondary">취소</button>
-                    </div>
+                <div class="button-group">
+                    <button class="btn-icon" onclick="toggleGallery()">
+                        <span>🌊</span>
+                    </button>
+                    <button class="btn-icon" onclick="alert('바보')">
+                        <span>💙</span>
+                    </button>
+                </div>
+
+                <div class="user-controls">
+                    <button onclick="toggleEditProfile()" class="text-btn">정보 수정</button>
+                    <span class="divider">|</span>
+                    <button onclick="handleLogout()" class="text-btn logout">로그아웃</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. SNS Feed Section -->
+        <section class="feed-section">
+            <div class="write-card">
+                <textarea id="postContent" placeholder="방명록을 남겨주세요..."></textarea>
+                <div class="write-bottom">
+                    <input type="text" id="postImgUrl" placeholder="이미지 URL (선택)">
+                    <button onclick="createPost()" class="btn-post">남기기</button>
                 </div>
             </div>
 
-            <!-- Feed Section -->
-            <main class="feed-section">
-                <!-- Write Post -->
-                <div class="write-post-card">
-                    <textarea id="postContent" placeholder="무슨 생각을 하고 계신가요?"></textarea>
-                    <div class="write-actions">
-                        <input type="text" id="postImgUrl" placeholder="이미지 URL (선택)">
-                        <button onclick="createPost()" class="btn-post">게시</button>
-                    </div>
-                </div>
+            <div id="postsList" class="posts-stream">
+                <div class="loading">로딩 중...</div>
+            </div>
+        </section>
+    </div>
 
-                <!-- Posts List -->
-                <div id="postsList" class="posts-stream">
-                    <!-- Posts will be loaded here -->
-                    <div class="loading">게시물 불러오는 중...</div>
-                </div>
-            </main>
+    <!-- Gallery Modal (Original) -->
+    <div id="galleryModal" class="modal">
+        <div class="modal-header">
+            <h2>미디어 갤러리</h2>
+            <button class="close-btn" onclick="toggleGallery()">&times;</button>
         </div>
+        <div class="modal-content gallery-grid">
+            <div class="grid-item"><img src="assets/gallery1.png" onclick="openLightbox(this.src)"></div>
+            <div class="grid-item"><img src="assets/gallery2.png" onclick="openLightbox(this.src)"></div>
+            <div class="grid-item"><img src="assets/gallery3.jpg" onclick="openLightbox(this.src)"></div>
+            <div class="grid-item"><img src="assets/gallery4.jpg" onclick="openLightbox(this.src)"></div>
+        </div>
+    </div>
+
+    <!-- Profile Edit Modal -->
+    <div id="editProfileModal" class="modal-overlay hidden">
+        <div class="modal-box">
+            <h3>내 정보 수정</h3>
+            <input type="text" id="editNameInput" placeholder="이름">
+            <input type="text" id="editBioInput" placeholder="한줄 소개 (아직 기능 준비중)" disabled style="background:#eee">
+            <input type="text" id="editImgInput" placeholder="프로필 이미지 URL">
+            <div class="modal-actions">
+                <button onclick="saveProfile()" class="btn-primary">저장</button>
+                <button onclick="toggleEditProfile()" class="btn-secondary">취소</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Lightbox -->
+    <div id="lightboxModal" class="lightbox" onclick="closeLightbox()">
+        <img id="lightboxImg" src="" alt="Enlarged">
     </div>
 
     <!-- Firebase SDKs -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut, updateProfile } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-        import { getFirestore, collection, addDoc, query, orderBy, onSnapshot, serverTimestamp, updateDoc, doc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, query, orderBy, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyBLxXjUFBcWfAwyQQz4hW2-mAI3YD3W4Rs",
@@ -99,15 +132,11 @@
             measurementId: "G-LT0NQXPZJ0"
         };
 
-        // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
-
-        // Global State
         let currentUser = null;
 
-        // Auth State Listener
         onAuthStateChanged(auth, (user) => {
             if (user) {
                 currentUser = user;
@@ -122,7 +151,21 @@
             }
         });
 
-        // UI Functions
+        // Gallery & UI Functions
+        window.toggleGallery = () => {
+            const modal = document.getElementById('galleryModal');
+            modal.style.display = (modal.style.display === 'flex') ? 'none' : 'flex';
+        };
+
+        window.openLightbox = (src) => {
+            document.getElementById('lightboxImg').src = src;
+            document.getElementById('lightboxModal').style.display = 'flex';
+        };
+
+        window.closeLightbox = () => {
+            document.getElementById('lightboxModal').style.display = 'none';
+        }
+
         window.showLogin = () => {
             document.getElementById('loginForm').classList.remove('hidden');
             document.getElementById('signupForm').classList.add('hidden');
@@ -141,14 +184,15 @@
             const modal = document.getElementById('editProfileModal');
             if (modal.classList.contains('hidden')) {
                 modal.classList.remove('hidden');
-                document.getElementById('editNameInput').value = currentUser.displayName || '';
-                document.getElementById('editImgInput').value = currentUser.photoURL || '';
+                const user = auth.currentUser;
+                document.getElementById('editNameInput').value = user.displayName || '';
+                document.getElementById('editImgInput').value = user.photoURL || '';
             } else {
                 modal.classList.add('hidden');
             }
         };
 
-        // Auth Actions
+        // Auth Logic
         window.handleLogin = async (e) => {
             e.preventDefault();
             const email = document.getElementById('loginEmail').value;
@@ -156,7 +200,7 @@
             try {
                 await signInWithEmailAndPassword(auth, email, password);
             } catch (error) {
-                document.getElementById('authError').innerText = "로그인 실패: " + error.message;
+                document.getElementById('authError').innerText = "오류: " + error.message;
             }
         };
 
@@ -166,14 +210,11 @@
             const email = document.getElementById('signupEmail').value;
             const password = document.getElementById('signupPassword').value;
             try {
-                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-                await updateProfile(userCredential.user, {
-                    displayName: name,
-                    photoURL: "assets/profile.png" // default image
-                });
-                location.reload(); // Refresh to update UI
+                const cred = await createUserWithEmailAndPassword(auth, email, password);
+                await updateProfile(cred.user, { displayName: name, photoURL: "assets/profile.png" });
+                location.reload();
             } catch (error) {
-                document.getElementById('authError').innerText = "가입 실패: " + error.message;
+                document.getElementById('authError').innerText = "오류: " + error.message;
             }
         };
 
@@ -182,75 +223,69 @@
         window.saveProfile = async () => {
             const newName = document.getElementById('editNameInput').value;
             const newImg = document.getElementById('editImgInput').value;
-
             try {
-                await updateProfile(auth.currentUser, {
-                    displayName: newName,
-                    photoURL: newImg || currentUser.photoURL
-                });
+                await updateProfile(auth.currentUser, { displayName: newName, photoURL: newImg || "assets/profile.png" });
                 updateProfileUI(auth.currentUser);
                 toggleEditProfile();
-
-                // Update previous posts author name (Optional: complex in NoSQL, skipping for simple demo)
-                alert('프로필이 업데이트되었습니다!');
+                alert('저장되었습니다.');
             } catch (e) {
-                alert('업데이트 실패: ' + e.message);
+                alert('실패: ' + e.message);
             }
         };
 
         function updateProfileUI(user) {
-            document.getElementById('userNameDisplay').innerText = user.displayName || '이름 없음';
-            document.getElementById('userEmailDisplay').innerText = user.email;
-            if (user.photoURL) document.getElementById('userProfileImg').src = user.photoURL;
+            // 이 앱의 주인은 '청'이므로 메인 프로필은 고정된 '청'일 수도 있고, 로그인한 사람일 수도 있음.
+            // 기획 의도: '청'의 페이지 방문 -> 로그인(방명록 쓰기 위함) -> 내 정보가 아니라 '청'이 보여야 함?
+            // 아니면 내 프로필 페이지가 되는 것임?
+            // "청 - 프로필" 페이지이므로 상단은 '청'으로 고정하고,
+            // 하단 글쓰기 창이나 댓글에서 내 프사를 보여주는 게 맞을 듯 하지만,
+            // 현재 요구사항 "프로필을 수정하고" 라고 했으므로 본인 프로필 페이지화 되는 것으로 가정.
+            if (user.displayName) document.getElementById('mainUserName').innerText = user.displayName;
+            if (user.photoURL) document.getElementById('mainProfileImg').src = user.photoURL;
         }
 
-        // Post Actions
+        // SNS Logic
         window.createPost = async () => {
             const content = document.getElementById('postContent').value;
             const imgUrl = document.getElementById('postImgUrl').value;
-
-            if (!content.trim()) return alert('내용을 입력해주세요!');
+            if (!content.trim()) return;
 
             try {
                 await addDoc(collection(db, "posts"), {
                     uid: currentUser.uid,
-                    authorName: currentUser.displayName,
-                    authorPhoto: currentUser.photoURL,
-                    content: content,
-                    imageUrl: imgUrl,
+                    author: currentUser.displayName || '익명',
+                    photo: currentUser.photoURL || 'assets/profile.png',
+                    text: content,
+                    image: imgUrl,
                     createdAt: serverTimestamp()
                 });
                 document.getElementById('postContent').value = '';
                 document.getElementById('postImgUrl').value = '';
-            } catch (e) {
-                alert('게시 실패: ' + e.message);
-            }
+            } catch (e) { console.error(e); alert('작성 실패'); }
         };
 
-        // Load Posts
         function loadPosts() {
             const q = query(collection(db, "posts"), orderBy("createdAt", "desc"));
             onSnapshot(q, (snapshot) => {
                 const list = document.getElementById('postsList');
                 list.innerHTML = '';
-                snapshot.forEach((doc) => {
-                    const post = doc.data();
-                    const date = post.createdAt ? new Date(post.createdAt.toDate()).toLocaleString() : '방금 전';
-
-                    const postEl = document.createElement('div');
-                    postEl.className = 'post-card';
-                    postEl.innerHTML = `
-                        <div class="post-header">
-                            <img src="${post.authorPhoto || 'assets/profile.png'}" class="post-avatar">
-                            <div>
-                                <strong>${post.authorName}</strong>
-                                <span class="post-date">${date}</span>
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    const date = data.createdAt ? new Date(data.createdAt.toDate()).toLocaleTimeString() : '방금';
+                    const div = document.createElement('div');
+                    div.className = 'post-item';
+                    div.innerHTML = `
+                        <div class="post-meta">
+                            <img src="${data.photo}" class="post-avatar">
+                            <div class="post-info">
+                                <b>${data.author}</b>
+                                <small>${date}</small>
                             </div>
                         </div>
-                        <p class="post-text">${post.content}</p>
-                        ${post.imageUrl ? `<img src="${post.imageUrl}" class="post-image">` : ''}
+                        <p class="post-content">${data.text}</p>
+                        ${data.image ? `<img src="${data.image}" class="post-img-content">` : ''}
                     `;
-                    list.appendChild(postEl);
+                    list.appendChild(div);
                 });
             });
         }
